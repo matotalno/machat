@@ -22,12 +22,24 @@ def run_command(command):
         return False
 
 def main():
-    print_colored("\n=== GitHub Push Tool ===\n", Fore.CYAN)
+    print_colored("\n=== GitHub Files Push Tool ===\n", Fore.CYAN)  # Updated title
+    
+    # Add version info
+    version = subprocess.run("git --version", 
+                           shell=True, capture_output=True, text=True)
+    print_colored(f"Using {version.stdout.strip()}\n", Fore.CYAN)
     
     # Check current branch
     branch = subprocess.run("git branch --show-current", 
                           shell=True, capture_output=True, text=True)
     print_colored(f"Current branch: {branch.stdout}", Fore.GREEN)
+    
+    # Add branch protection
+    if branch.stdout.strip() not in ['main', 'master']:
+        confirm = input(f"You're on branch '{branch.stdout.strip()}'. Continue? (y/n): ")
+        if confirm.lower() != 'y':
+            print_colored("Operation cancelled", Fore.YELLOW)
+            return
     
     # Proveri git status pre početka
     if not run_command("git status"):
