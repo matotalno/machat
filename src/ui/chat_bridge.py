@@ -234,13 +234,14 @@ class QMLBridge(QObject):
                     last_update = current_time
                     buffer = ""
                     
-                    # Dodaj malo pauze između update-ova
-                    await asyncio.sleep(0.01)
+                    # Sporiji streaming
+                    await asyncio.sleep(0.03)  # 30ms delay
             
             # Finalni update
             if buffer:
                 self.chat_model.update_last_ai_message(response)
                 self.messageReceived.emit()
+                await asyncio.sleep(0.1)  # Mali delay na kraju
                 
         except Exception as e:
             logger.error(f"Error in _handle_message: {e}", exc_info=True)
@@ -366,14 +367,20 @@ class QMLBridge(QObject):
                     break
                     
             if index >= 0:
-                # Briši iz modela
+                # Prvo postavi drugi current session ako brišemo trenutni
+                if self._current_session and self._current_session.id == session_id:
+                    # Nađi prvu dostupnu sesiju koja nije ova koju brišemo
+                    next_session = next(
+                        (s for s in self.session_model._sessions 
+                         if s.id != session_id), 
+                        None
+                    )
+                    self._current_session = next_session
+                
+                # Sada bezbedno briši
                 self.session_model.beginRemoveRows(QModelIndex(), index, index)
                 removed_session = self.session_model._sessions.pop(index)
                 self.session_model.endRemoveRows()
-                
-                # Ako je trenutna sesija obrisana
-                if self._current_session and self._current_session.id == session_id:
-                    self._current_session = None
                 
                 # Sačuvaj promene
                 self._save_sessions()
@@ -381,9 +388,9 @@ class QMLBridge(QObject):
                 # Ako nema više sesija, kreiraj novu
                 if not self.session_model._sessions:
                     self.createNewChat()
-                else:
-                    # Selektuj prvu dostupnu sesiju
-                    self.selectSession(self.session_model._sessions[0].id)
+                elif self._current_session:
+                    # Selektuj trenutnu sesiju
+                    self.selectSession(self._current_session.id)
                     
                 logger.debug(f"Session successfully deleted: {session_id}")
                 

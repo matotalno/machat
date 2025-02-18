@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Basic  // Dodajemo Basic stil
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import "components" as Components
+import "components/blocks" as Blocks  // Dodaj ovo
 
 ApplicationWindow {
     id: root
@@ -57,8 +59,15 @@ ApplicationWindow {
                     verticalLayoutDirection: ListView.TopToBottom
                     clip: true
                     
-                    delegate: Rectangle {
+                    Blocks.EmptyStateComponent {
+                        anchors.centerIn: parent
+                        visible: sessionList.count === 0
                         width: parent.width
+                        height: parent.height
+                    }
+                    
+                    delegate: Rectangle {
+                        width: sessionList.width || 0  // Fix null width error
                         height: 44
                         color: model.sessionId === chatBridge.current_session_id ? "#3E3F4B" : "transparent"
                         
@@ -149,13 +158,21 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     clip: true
+
+                    // Dodaj property za praćenje scroll pozicije
+                    property bool atBottom: messageList.atYEnd
                     
                     ListView {
                         id: messageList
                         width: chatScrollView.width
                         height: chatScrollView.height
                         model: chatModel
-                        delegate: MessageDelegate {}
+                        delegate: Components.MessageBlock {
+                            width: messageList.width
+                            message: model.message
+                            isUser: model.isUser
+                            timestamp: model.timestamp
+                        }
                         spacing: 0
                         
                         // Osnovna podešavanja
@@ -171,7 +188,7 @@ ApplicationWindow {
                         property real lastContentY: 0
                         
                         // Dodaj property za praćenje pozicije
-                        property bool atYEnd: contentY >= contentHeight - height
+                        property bool atYEnd: contentY >= contentHeight - height - 10
                         
                         // Poboljšan auto-scroll
                         
@@ -225,25 +242,27 @@ ApplicationWindow {
                         
                         // Dodaj smooth scroll behavior
                         Behavior on contentY {
-                            NumberAnimation {
-                                duration: 500  // duže trajanje
-                                easing.type: Easing.OutCubic
+                            SmoothedAnimation {
+                                duration: 800  // Duža animacija
+                                velocity: 800  // Brža početna brzina
+                                easing.type: Easing.OutCubic  // Prirodniji efekat
                             }
                         }
                     }
                     
-                    // "Scroll to bottom" dugme
+                    // "Scroll to bottom" dugme (moderniji pristup bez DropShadow)
                     Rectangle {
                         id: scrollToBottomButton
-                        width: 44  // malo veće
+                        width: 44
                         height: 44
                         radius: 22
-                        color: "#ffffff"  // bela pozadina
-                        border.width: 1
-                        border.color: "#e5e7eb"
-                        visible: !messageList.atYEnd  // Menjamo uslov - prikaži kad nismo na dnu
-                        opacity: 0.95
-                        z: 100  // Stavi iznad ostalih elemenata
+                        color: "#ffffff"
+                        visible: !messageList.atYEnd
+                        opacity: visible ? 0.95 : 0
+                        z: 100
+
+                        // Svojstva za animacije
+                        property bool isHovered: false
                         
                         anchors {
                             right: parent.right
@@ -251,23 +270,21 @@ ApplicationWindow {
                             margins: 24
                         }
                         
-                        // Lepša senka
+                        // Moderna senka bez DropShadow
                         Rectangle {
-                            z: -1
+                            id: buttonShadow
                             anchors.fill: parent
                             anchors.margins: -2
                             radius: parent.radius + 2
-                            color: "#40000000"
-                            opacity: 0.15
+                            color: "#20000000"
+                            z: -1
                         }
-                        
-                        // Strelica sa zelenom pozadinom
+
+                        // Zelena pozadina sa ikonom
                         Rectangle {
-                            anchors.centerIn: parent
-                            width: 32
-                            height: 32
-                            radius: 16
-                            color: "#19c37d"
+                            anchors.fill: parent
+                            radius: parent.radius
+                            color: scrollToBottomButton.isHovered ? Qt.darker("#19c37d", 1.1) : "#19c37d"
                             
                             Text {
                                 anchors.centerIn: parent
@@ -276,22 +293,33 @@ ApplicationWindow {
                                 font.pixelSize: 20
                                 font.bold: true
                             }
+                            
+                            // Smooth color transition
+                            Behavior on color {
+                                ColorAnimation { duration: 150 }
+                            }
                         }
-                        
+
+                        // Interakcija
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
-                                scrollAnimation.stop() // Zaustavi prethodni scroll ako postoji
-                                messageList.autoScrollEnabled = true
-                                scrollAnimation.start()
-                            }
-                            
                             hoverEnabled: true
-                            onEntered: parent.scale = 1.05
-                            onExited: parent.scale = 1.0
+                            cursorShape: Qt.PointingHandCursor
+                            
+                            onEntered: {
+                                scrollToBottomButton.isHovered = true
+                                parent.scale = 1.05
+                            }
+                            onExited: {
+                                scrollToBottomButton.isHovered = false
+                                parent.scale = 1.0
+                            }
+                            onClicked: {
+                                scrollToBottomAnimation.start()
+                            }
                         }
                         
-                        // Smooth scale animacija
+                        // Scale animation
                         Behavior on scale {
                             NumberAnimation { 
                                 duration: 150 
@@ -299,35 +327,38 @@ ApplicationWindow {
                             }
                         }
                         
-                        // Pojavi se sa animacijom
+                        // Opacity animation
                         Behavior on opacity {
                             NumberAnimation { duration: 200 }
                         }
                     }
-                    
-                    // Dodaj smooth scroll animation
+
+                    // Smooth scroll animation
                     NumberAnimation {
-                        id: scrollAnimation
+                        id: scrollToBottomAnimation
                         target: messageList
                         property: "contentY"
                         to: messageList.contentHeight - messageList.height
-                        duration: 500  // duže trajanje za glađu animaciju
-                        easing.type: Easing.OutCubic  // prirodnija animacija
+                        duration: 500
+                        easing.type: Easing.OutCubic
+                        
+                        onFinished: {
+                            messageList.autoScrollEnabled = true
+                        }
                     }
                 }
                 
                 // Typing indicator
-                Text {
+                Components.CustomTypingIndicator {
                     id: typingIndicator
-                    text: "AI kuca..."
-                    color: "#666666"
-                    visible: false
-                    Layout.leftMargin: 10
-                    Layout.bottomMargin: 5
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 16
+                    Layout.bottomMargin: 8
                 }
-                
+
                 // Input area
                 Rectangle {
+                    id: inputArea
                     Layout.fillWidth: true
                     height: 80
                     color: "#ffffff"
@@ -347,6 +378,7 @@ ApplicationWindow {
                             placeholderText: "Unesite poruku..."
                             enabled: !typingIndicator.visible
                             font.pixelSize: 16
+                            
                             background: Rectangle {
                                 color: "#f9fafb"
                                 radius: 8

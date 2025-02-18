@@ -13,16 +13,30 @@ import qasync
 root_dir = str(Path(__file__).parent.parent.parent)
 sys.path.append(root_dir)
 
-from src.ui.chat_bridge import QMLBridge
+from src.ui.chat_bridge import QMLBridge  # Changed from relative to absolute
 
 # Postavljanje logginga
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+# Dodaj import za efekte
+from PySide6.QtQml import qmlRegisterType
+from PySide6.QtQuick import QQuickItem
+
+from src.ui.qml_registrator import register_qml_types  # Changed from relative to absolute
+
 def main():
     try:
-        # Inicijalizacija aplikacije
         app = QApplication(sys.argv)
+        
+        # Register QML types
+        register_qml_types()
+        
+        # Load resources
+        from PySide6.QtCore import QResource
+        QResource.registerResource(os.path.join(os.path.dirname(__file__), "qml", "resources.rcc"))
+        
+        # Postavi stil za sve kontrole
         QQuickStyle.setStyle("Basic")
         
         # Event loop setup
@@ -41,6 +55,18 @@ def main():
         # QML Engine setup
         engine = QQmlApplicationEngine()
         bridge = QMLBridge(loop)
+        
+        # Dodaj putanje za QML module
+        qml_path = os.path.join(os.path.dirname(__file__), "qml")
+        components_path = os.path.join(qml_path, "components")
+        blocks_path = os.path.join(components_path, "blocks")
+        
+        engine.addImportPath(qml_path)
+        engine.addImportPath(components_path)
+        engine.addImportPath(blocks_path)
+        
+        # Registruj dodatne module
+        engine.addImportPath("qrc:/qt-project.org/imports")
         
         # Postavljanje context properties
         engine.rootContext().setContextProperty("chatBridge", bridge)

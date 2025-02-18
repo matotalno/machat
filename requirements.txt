@@ -1,0 +1,12 @@
+openai>=1.0.0
+python-dotenv
+PySide6>=6.8.2
+PySide6-Addons>=6.8.2
+PySide6-Essentials>=6.8.2
+qasync
+colorama
+markdown2
+pygments
+mistune>=3.0.0  # Za bolji Markdown rendering
+python-markdown-math  # Za math formule
+Pygments>=2.17.2  # Za code highlighting

@@ -56,8 +56,8 @@ class OpenAIClient:
             
             async for chunk in response:
                 if chunk.choices[0].delta.content:
-                    # Dodaj malo kašnjenja između tokena
-                    await asyncio.sleep(0.01)  # 10ms delay između tokena
+                    # Duži delay između tokena
+                    await asyncio.sleep(0.03)  # 30ms delay za prirodniji efekat
                     yield chunk.choices[0].delta.content
 
         except Exception as e:

@@ -1,0 +1,4 @@
+module Blocks
+EmptyStateComponent 1.0 EmptyStateComponent.qml
+MessageBlock 1.0 MessageBlock.qml
+ParagraphBlock 1.0 ParagraphBlock.qml

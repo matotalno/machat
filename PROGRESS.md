@@ -67,7 +67,7 @@ modern-ai-chat/
     │       └── MessageDelegate.qml
     └── utils/
 
-## TRENUTNO STANJE (17.02.2024)
+## TRENUTNO STANJE (18.02.2024)
 
 ### ✅ Implementirane Funkcionalnosti
 
@@ -80,18 +80,34 @@ modern-ai-chat/
    - [x] Basic message bubbles
    - [x] Avatar sistem
    - [x] Timestamp na porukama
+   - [x] Empty state za listu razgovora
+   - [x] Custom typing indicator
+   - [x] Action buttons (copy, thumbs up/down)
+   - [x] Loading spinner
+   - [x] Scroll to bottom button
 
 2. Input Sistem:
    - [x] Multiline TextEdit
    - [x] Enter = send
    - [x] Shift+Enter = novi red
    - [x] Send dugme
+   - [x] Disabled state tokom odgovora
+   - [x] Vizuelni feedback
 
-3. Session Management (Basic):
+3. Session Management:
    - [x] JSON storage format
    - [x] Kreiranje sesija
    - [x] Brisanje sesija
    - [x] Prebacivanje između sesija
+   - [x] Auto-kreiranje nove sesije
+   - [x] Perzistencija poruka
+
+4. UI Komponente:
+   - [x] MessageBlock sa akcijama
+   - [x] CustomTypingIndicator
+   - [x] ActionButton
+   - [x] LoadingSpinner
+   - [x] EmptyStateComponent
 
 ### ⚡ PRIORITET 1 - Core UI Components
 

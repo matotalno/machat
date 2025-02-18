@@ -7,10 +7,12 @@ modern-ai-chat/
     README.md
     STATE_MANAGEMENT.md
     UI_SPEC.md
+    check_versions.py
     current_structure.txt
     generate_structure.py
     git_files_push.py
     git_files_sync_check.py
+    requirements.txt
     sessions.example.json
     sessions.json
     .vscode/
@@ -24,8 +26,10 @@ modern-ai-chat/
             __init__.py
             openai_client.py
         ui/
+            CMakeLists.txt
             __init__.py
             chat_bridge.py
+            qml_registrator.py
             qml_test.py
             qml/
                 ChatView.qml
@@ -33,7 +37,36 @@ modern-ai-chat/
                 MainWindow.qml
                 MessageDelegate.qml
                 SidebarView.qml
+                resources.qrc
+                resources.rcc
+                components/
+                    ActionButton.qml
+                    BlurredOverlay.qml
+                    CodeViewer.qml
+                    CustomTypingIndicator.qml
+                    EmptyStateComponent.qml
+                    LoadingSpinner.qml
+                    MarkdownRenderer.qml
+                    MessageLoadingPlaceholder.qml
+                    ModernToolTip.qml
+                    RippleButton.qml
+                    SmoothScrollView.qml
+                    TypingIndicator.qml
+                    qmldir
+                    blocks/
+                        CodeBlock.qml
+                        EmptyStateComponent.qml
+                        MessageBlock.qml
+                        qmldir
+                icons/
+                    ChevronDown.qml
+                    copy.svg
+                    thumbs-down.svg
+                    thumbs-up.svg
         utils/
+            __init__.py
+            markdown_parser.py
+            qexposed.py
     utils/
         session_manager.py
         update_progress.py

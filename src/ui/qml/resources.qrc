@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>icons/copy.svg</file>
+        <file>icons/thumbs-up.svg</file>
+        <file>icons/thumbs-down.svg</file>
+    </qresource>
+</RCC>
