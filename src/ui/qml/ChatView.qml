@@ -145,23 +145,174 @@ ApplicationWindow {
                 
                 // Chat area
                 ScrollView {
+                    id: chatScrollView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     clip: true
                     
                     ListView {
                         id: messageList
-                        anchors.fill: parent
+                        width: chatScrollView.width
+                        height: chatScrollView.height
                         model: chatModel
                         delegate: MessageDelegate {}
                         spacing: 0
-                        verticalLayoutDirection: ListView.BottomToTop
                         
+                        // Osnovna podešavanja
+                        layoutDirection: Qt.LeftToRight
+                        verticalLayoutDirection: ListView.TopToBottom
+                        
+                        // Poboljšane scrolling performanse
+                        cacheBuffer: 1000
+                        reuseItems: true
+                        
+                        // Scrolling properties
+                        property bool autoScrollEnabled: true
+                        property real lastContentY: 0
+                        
+                        // Dodaj property za praćenje pozicije
+                        property bool atYEnd: contentY >= contentHeight - height
+                        
+                        // Poboljšan auto-scroll
+                        
+                        // Pratimo promene u modelu
                         onCountChanged: {
                             if (count > 0) {
-                                positionViewAtEnd()
+                                messageList.positionViewAtEnd()
                             }
                         }
+                        
+                        // Pratimo promene sadržaja
+                        onContentHeightChanged: {
+                            if (autoScrollEnabled) {
+                                messageList.positionViewAtEnd()  // Fix: Dodaj messageList.
+                            }
+                            lastContentY = contentY 
+                        }
+                        
+                        // Smooth scrolling postavke
+                        flickDeceleration: 1500
+                        maximumFlickVelocity: 2500
+                        boundsBehavior: Flickable.StopAtBounds
+                        
+                        // Praćenje novih poruka
+                        Connections {
+                            target: chatModel
+                            function onLastMessageChanged() {
+                                messageList.positionViewAtEnd()
+                            }
+                        }
+                        
+                        // Uvek scroll na dno kad stigne nova poruka
+                        Connections {
+                            target: chatBridge
+                            function onMessageReceived() {
+                                messageList.positionViewAtEnd()  // Fix: Dodaj messageList.
+                            }
+                        }
+                        
+                        // Prati da li je korisnik manuelno skrolovao
+                        onContentYChanged: {
+                            if (!dragging && !flicking) {
+                                var atBottom = (contentY + height + 10 >= contentHeight)
+                                autoScrollEnabled = atBottom
+                            }
+                            lastContentY = contentY
+                            
+                            // Proveri da li smo na dnu
+                            atYEnd = contentY >= contentHeight - height - 10
+                        }
+                        
+                        // Dodaj smooth scroll behavior
+                        Behavior on contentY {
+                            NumberAnimation {
+                                duration: 500  // duže trajanje
+                                easing.type: Easing.OutCubic
+                            }
+                        }
+                    }
+                    
+                    // "Scroll to bottom" dugme
+                    Rectangle {
+                        id: scrollToBottomButton
+                        width: 44  // malo veće
+                        height: 44
+                        radius: 22
+                        color: "#ffffff"  // bela pozadina
+                        border.width: 1
+                        border.color: "#e5e7eb"
+                        visible: !messageList.atYEnd  // Menjamo uslov - prikaži kad nismo na dnu
+                        opacity: 0.95
+                        z: 100  // Stavi iznad ostalih elemenata
+                        
+                        anchors {
+                            right: parent.right
+                            bottom: parent.bottom
+                            margins: 24
+                        }
+                        
+                        // Lepša senka
+                        Rectangle {
+                            z: -1
+                            anchors.fill: parent
+                            anchors.margins: -2
+                            radius: parent.radius + 2
+                            color: "#40000000"
+                            opacity: 0.15
+                        }
+                        
+                        // Strelica sa zelenom pozadinom
+                        Rectangle {
+                            anchors.centerIn: parent
+                            width: 32
+                            height: 32
+                            radius: 16
+                            color: "#19c37d"
+                            
+                            Text {
+                                anchors.centerIn: parent
+                                text: "↓"
+                                color: "white"
+                                font.pixelSize: 20
+                                font.bold: true
+                            }
+                        }
+                        
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                scrollAnimation.stop() // Zaustavi prethodni scroll ako postoji
+                                messageList.autoScrollEnabled = true
+                                scrollAnimation.start()
+                            }
+                            
+                            hoverEnabled: true
+                            onEntered: parent.scale = 1.05
+                            onExited: parent.scale = 1.0
+                        }
+                        
+                        // Smooth scale animacija
+                        Behavior on scale {
+                            NumberAnimation { 
+                                duration: 150 
+                                easing.type: Easing.OutQuad
+                            }
+                        }
+                        
+                        // Pojavi se sa animacijom
+                        Behavior on opacity {
+                            NumberAnimation { duration: 200 }
+                        }
+                    }
+                    
+                    // Dodaj smooth scroll animation
+                    NumberAnimation {
+                        id: scrollAnimation
+                        target: messageList
+                        property: "contentY"
+                        to: messageList.contentHeight - messageList.height
+                        duration: 500  // duže trajanje za glađu animaciju
+                        easing.type: Easing.OutCubic  // prirodnija animacija
                     }
                 }
                 

@@ -21,11 +21,17 @@ class ChatSession:
     def __post_init__(self):
         if self.messages is None:
             self.messages = []
+        # Dodaj role ako ne postoji
+        for msg in self.messages:
+            if "role" not in msg:
+                msg["role"] = "user" if msg.get("is_user", True) else "assistant"
 
 class MessageModel(QAbstractListModel):
     MessageRole = Qt.UserRole + 1
     IsUserRole = Qt.UserRole + 2
     TimestampRole = Qt.UserRole + 3
+    RoleRole = Qt.UserRole + 4  # Dodajemo role za OpenAI format
+    lastMessageChanged = Signal()  # Dodajemo novi signal
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -42,6 +48,8 @@ class MessageModel(QAbstractListModel):
             return message["is_user"]
         elif role == self.TimestampRole:
             return message["timestamp"]
+        elif role == self.RoleRole:
+            return message["role"]
         
         return None
 
@@ -49,18 +57,21 @@ class MessageModel(QAbstractListModel):
         return {
             self.MessageRole: b"message",
             self.IsUserRole: b"isUser",
-            self.TimestampRole: b"timestamp"
+            self.TimestampRole: b"timestamp",
+            self.RoleRole: b"role"
         }
 
     def rowCount(self, parent=QModelIndex()):
         return len(self._messages)
 
     def add_message(self, text, is_user=True):
+        role = "user" if is_user else "assistant"
         self.beginInsertRows(QModelIndex(), len(self._messages), len(self._messages))
         self._messages.append({
             "text": text,
             "is_user": is_user,
-            "timestamp": datetime.now().strftime("%H:%M")  # Timestamp se dodaje
+            "timestamp": datetime.now().strftime("%H:%M"),  # Timestamp se dodaje
+            "role": role  # Eksplicitno dodajemo role
         })
         self.endInsertRows()
 
@@ -69,6 +80,7 @@ class MessageModel(QAbstractListModel):
             self._messages[-1]["text"] = text
             index = self.index(len(self._messages) - 1, 0)
             self.dataChanged.emit(index, index, [self.MessageRole])
+            self.lastMessageChanged.emit()  # Emitujemo signal
 
 class SessionModel(QAbstractListModel):
     TitleRole = Qt.UserRole + 1
@@ -110,6 +122,7 @@ class QMLBridge(QObject):
     isTypingChanged = Signal(bool)
     currentSessionChanged = Signal()
     sessionDeleted = Signal(str)  # Dodati samo ovaj signal
+    messageReceived = Signal()  # Dodaj novi signal
 
     def __init__(self, loop=None):
         super().__init__()
@@ -133,6 +146,10 @@ class QMLBridge(QObject):
             with open(self.sessions_file, 'r') as f:
                 data = json.load(f)
                 for session_data in data:
+                    # Dodaj role svim porukama ako ne postoji
+                    for msg in session_data.get('messages', []):
+                        if "role" not in msg:
+                            msg["role"] = "user" if msg.get("is_user", True) else "assistant"
                     session = ChatSession(
                         id=session_data['id'],
                         title=session_data['title'],
@@ -143,14 +160,19 @@ class QMLBridge(QObject):
             self.createNewChat()
 
     def _save_sessions(self):
-        data = [{
-            'id': session.id,
-            'title': session.title,
-            'messages': session.messages
-        } for session in self.session_model._sessions]  # Koristi session_model umesto _session_model
-        
-        with open(self.sessions_file, 'w') as f:
-            json.dump(data, f)
+        try:
+            logger.debug("Saving sessions...")
+            data = [{
+                'id': session.id,
+                'title': session.title,
+                'messages': session.messages if session.messages else []
+            } for session in self.session_model._sessions]
+            
+            with open(self.sessions_file, 'w') as f:
+                json.dump(data, f, indent=2)  # Added indent for better readability
+            logger.debug("Sessions saved successfully")
+        except Exception as e:
+            logger.error(f"Error saving sessions: {e}", exc_info=True)
 
     @Slot(str)
     def sendMessage(self, message):
@@ -159,8 +181,14 @@ class QMLBridge(QObject):
             
         try:
             logger.debug(f"Sending message: {message}")
+            # Add message to chat model
             self.chat_model.add_message(message, True)
             self.chat_model.add_message("", False)
+            
+            # Update current session messages
+            if self._current_session:
+                self._current_session.messages = self.chat_model._messages.copy()
+                self._save_sessions()  # Save after adding message
             
             if self._loop and self._loop.is_running():
                 self._loop.create_task(self._handle_message(message))
@@ -169,20 +197,51 @@ class QMLBridge(QObject):
                 
         except Exception as e:
             logger.error(f"Error in sendMessage: {e}", exc_info=True)
-        
+
+    def get_conversation_messages(self):
+        """Konvertuj poruke u format za OpenAI API"""
+        messages = []
+        for msg in self.chat_model._messages:
+            # Proveri da li postoji role, ako ne postoji dodeli default
+            role = msg.get("role", "user" if msg.get("is_user", True) else "assistant")
+            messages.append({
+                "role": role,
+                "content": msg["text"]
+            })
+        return messages
+
     async def _handle_message(self, message):
         try:
             self.isTypingChanged.emit(True)
             response = ""
+            buffer = ""
+            last_update = 0
+            MIN_UPDATE_INTERVAL = 0.1  # 100ms minimum između update-ova
             
-            async for token in self.openai_client.get_streaming_response(message):
+            # Uzmi poruke iz konverzacije
+            conversation_messages = self.get_conversation_messages()
+            
+            async for token in self.openai_client.get_streaming_response(conversation_messages):
                 response += token
-                # Ažuriraj poslednju AI poruku
-                self.chat_model.update_last_ai_message(response)
-                # Ažuriramo sesiju sa svakim tokenom
-                if self.current_session:
-                    self.current_session.messages = self.chat_model._messages.copy()
+                buffer += token
+                
+                current_time = asyncio.get_event_loop().time()
+                time_since_update = current_time - last_update
+                
+                if time_since_update >= MIN_UPDATE_INTERVAL:
+                    self.chat_model.update_last_ai_message(response)
+                    self.messageReceived.emit()
+                    last_update = current_time
+                    buffer = ""
                     
+                    # Dodaj malo pauze između update-ova
+                    await asyncio.sleep(0.01)
+            
+            # Finalni update
+            if buffer:
+                self.chat_model.update_last_ai_message(response)
+                self.messageReceived.emit()
+                
         except Exception as e:
             logger.error(f"Error in _handle_message: {e}", exc_info=True)
             self.chat_model.update_last_ai_message(f"Greška: {str(e)}")
@@ -249,24 +308,26 @@ class QMLBridge(QObject):
             if not session_id:
                 return
 
-            # Prvo pronađi novu sesiju
+            # Save current session before switching
+            if self._current_session:
+                self._current_session.messages = self.chat_model._messages.copy()
+                self._save_sessions()
+
+            # Find new session
             new_session = next((s for s in self.session_model._sessions 
                               if s.id == session_id), None)
             
             if not new_session:
                 return
 
-            # Sačuvaj trenutnu sesiju ako postoji
-            if self._current_session:
-                self._save_sessions()
-
-            # Update message model
+            # Update message model with new session messages
             self.chat_model.beginResetModel()
             self.chat_model._messages = new_session.messages.copy() if new_session.messages else []
             self.chat_model.endResetModel()
 
-            # Postavi novu sesiju
+            # Set new session
             self._current_session = new_session
+            self._save_sessions()  # Save after switching
             self.currentSessionChanged.emit()
             
         except Exception as e:

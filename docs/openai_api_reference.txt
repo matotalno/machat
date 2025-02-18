@@ -1,0 +1,406 @@
+# KOMPLETNA OPENAI API REFERENCA (Februar 2024)
+
+# SHARED TYPES
+from openai.types import (
+    ErrorObject,
+    FunctionDefinition, 
+    FunctionParameters,
+    Metadata,
+    ResponseFormatJSONObject,
+    ResponseFormatJSONSchema,
+    ResponseFormatText,
+)
+
+# COMPLETIONS
+from openai.types import Completion, CompletionChoice, CompletionUsage
+
+Methods:
+client.completions.create(**params) -> Completion
+
+# CHAT COMPLETIONS
+from openai.types.chat import (
+    ChatCompletion,
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionAudio,
+    ChatCompletionAudioParam,
+    ChatCompletionChunk,
+    ChatCompletionContentPart,
+    ChatCompletionContentPartImage,
+    ChatCompletionContentPartInputAudio,
+    ChatCompletionContentPartRefusal,
+    ChatCompletionContentPartText,
+    ChatCompletionDeleted,
+    ChatCompletionDeveloperMessageParam,
+    ChatCompletionFunctionCallOption,
+    ChatCompletionFunctionMessageParam,
+    ChatCompletionMessage,
+    ChatCompletionMessageParam,
+    ChatCompletionMessageToolCall,
+    ChatCompletionModality,
+    ChatCompletionNamedToolChoice,
+    ChatCompletionPredictionContent,
+    ChatCompletionReasoningEffort,
+    ChatCompletionRole,
+    ChatCompletionStoreMessage,
+    ChatCompletionStreamOptions,
+    ChatCompletionSystemMessageParam,
+    ChatCompletionTokenLogprob,
+    ChatCompletionTool,
+    ChatCompletionToolChoiceOption,
+    ChatCompletionToolMessageParam,
+    ChatCompletionUserMessageParam,
+)
+
+Methods:
+client.chat.completions.create(**params) -> ChatCompletion
+client.chat.completions.retrieve(completion_id) -> ChatCompletion
+client.chat.completions.update(completion_id, **params) -> ChatCompletion
+client.chat.completions.list(**params) -> SyncCursorPage[ChatCompletion]
+client.chat.completions.delete(completion_id) -> ChatCompletionDeleted
+
+# Messages
+client.chat.completions.messages.list(completion_id, **params) -> SyncCursorPage[ChatCompletionStoreMessage]
+
+# EMBEDDINGS
+from openai.types import CreateEmbeddingResponse, Embedding, EmbeddingModel
+
+Methods:
+client.embeddings.create(**params) -> CreateEmbeddingResponse
+
+# FILES
+from openai.types import FileContent, FileDeleted, FileObject, FilePurpose
+
+Methods:
+client.files.create(**params) -> FileObject
+client.files.retrieve(file_id) -> FileObject
+client.files.list(**params) -> SyncCursorPage[FileObject]
+client.files.delete(file_id) -> FileDeleted
+client.files.content(file_id) -> HttpxBinaryResponseContent
+client.files.retrieve_content(file_id) -> str
+client.files.wait_for_processing(*args) -> FileObject
+
+# IMAGES
+from openai.types import Image, ImageModel, ImagesResponse
+
+Methods:
+client.images.create_variation(**params) -> ImagesResponse
+client.images.edit(**params) -> ImagesResponse
+client.images.generate(**params) -> ImagesResponse
+
+# AUDIO
+from openai.types import AudioModel, AudioResponseFormat
+
+## Transcriptions
+from openai.types.audio import (
+    Transcription,
+    TranscriptionSegment,
+    TranscriptionVerbose,
+    TranscriptionWord,
+    TranscriptionCreateResponse,
+)
+
+Methods:
+client.audio.transcriptions.create(**params) -> TranscriptionCreateResponse
+
+## Translations
+from openai.types.audio import Translation, TranslationVerbose, TranslationCreateResponse
+
+Methods:
+client.audio.translations.create(**params) -> TranslationCreateResponse
+
+## Speech
+from openai.types.audio import SpeechModel
+
+Methods:
+client.audio.speech.create(**params) -> HttpxBinaryResponseContent
+
+# MODERATIONS
+from openai.types import (
+    Moderation,
+    ModerationImageURLInput,
+    ModerationModel,
+    ModerationMultiModalInput,
+    ModerationTextInput,
+    ModerationCreateResponse,
+)
+
+Methods:
+client.moderations.create(**params) -> ModerationCreateResponse
+
+# MODELS
+from openai.types import Model, ModelDeleted
+
+Methods:
+client.models.retrieve(model) -> Model
+client.models.list() -> SyncPage[Model]
+client.models.delete(model) -> ModelDeleted
+
+# FINE TUNING
+from openai.types.fine_tuning import (
+    FineTuningJob,
+    FineTuningJobEvent,
+    FineTuningJobIntegration,
+    FineTuningJobWandbIntegration,
+    FineTuningJobWandbIntegrationObject,
+)
+
+Methods:
+client.fine_tuning.jobs.create(**params) -> FineTuningJob
+client.fine_tuning.jobs.retrieve(fine_tuning_job_id) -> FineTuningJob
+client.fine_tuning.jobs.list(**params) -> SyncCursorPage[FineTuningJob]
+client.fine_tuning.jobs.cancel(fine_tuning_job_id) -> FineTuningJob
+client.fine_tuning.jobs.list_events(fine_tuning_job_id, **params) -> SyncCursorPage[FineTuningJobEvent]
+
+## Checkpoints
+from openai.types.fine_tuning.jobs import FineTuningJobCheckpoint
+
+Methods:
+client.fine_tuning.jobs.checkpoints.list(fine_tuning_job_id, **params) -> SyncCursorPage[FineTuningJobCheckpoint]
+
+# BETA FEATURES
+
+## Realtime
+from openai.types.beta.realtime import (
+    ConversationCreatedEvent,
+    ConversationItem,
+    ConversationItemContent,
+    ConversationItemCreateEvent,
+    ConversationItemCreatedEvent,
+    ConversationItemDeleteEvent,
+    ConversationItemDeletedEvent,
+    ConversationItemInputAudioTranscriptionCompletedEvent,
+    ConversationItemInputAudioTranscriptionFailedEvent,
+    ConversationItemTruncateEvent,
+    ConversationItemTruncatedEvent,
+    ConversationItemWithReference,
+    ErrorEvent,
+    InputAudioBufferAppendEvent,
+    InputAudioBufferClearEvent,
+    InputAudioBufferClearedEvent,
+    InputAudioBufferCommitEvent,
+    InputAudioBufferCommittedEvent,
+    InputAudioBufferSpeechStartedEvent,
+    InputAudioBufferSpeechStoppedEvent,
+    RateLimitsUpdatedEvent,
+    RealtimeClientEvent,
+    RealtimeResponse,
+    RealtimeResponseStatus,
+    RealtimeResponseUsage,
+    RealtimeServerEvent,
+    ResponseAudioDeltaEvent,
+    ResponseAudioDoneEvent,
+    ResponseAudioTranscriptDeltaEvent,
+    ResponseAudioTranscriptDoneEvent,
+    ResponseCancelEvent,
+    ResponseContentPartAddedEvent,
+    ResponseContentPartDoneEvent,
+    ResponseCreateEvent,
+    ResponseCreatedEvent,
+    ResponseDoneEvent,
+    ResponseFunctionCallArgumentsDeltaEvent,
+    ResponseFunctionCallArgumentsDoneEvent,
+    ResponseOutputItemAddedEvent,
+    ResponseOutputItemDoneEvent,
+    ResponseTextDeltaEvent,
+    ResponseTextDoneEvent,
+    SessionCreatedEvent,
+    SessionUpdateEvent,
+    SessionUpdatedEvent,
+)
+
+### Sessions
+from openai.types.beta.realtime import Session, SessionCreateResponse
+
+Methods:
+client.beta.realtime.sessions.create(**params) -> SessionCreateResponse
+
+## Vector Stores
+from openai.types.beta import (
+    AutoFileChunkingStrategyParam,
+    FileChunkingStrategy,
+    FileChunkingStrategyParam,
+    OtherFileChunkingStrategyObject,
+    StaticFileChunkingStrategy,
+    StaticFileChunkingStrategyObject,
+    StaticFileChunkingStrategyObjectParam,
+    VectorStore,
+    VectorStoreDeleted,
+)
+
+Methods:
+client.beta.vector_stores.create(**params) -> VectorStore
+client.beta.vector_stores.retrieve(vector_store_id) -> VectorStore
+client.beta.vector_stores.update(vector_store_id, **params) -> VectorStore
+client.beta.vector_stores.list(**params) -> SyncCursorPage[VectorStore]
+client.beta.vector_stores.delete(vector_store_id) -> VectorStoreDeleted
+
+### Files
+from openai.types.beta.vector_stores import VectorStoreFile, VectorStoreFileDeleted
+
+Methods:
+client.beta.vector_stores.files.create(vector_store_id, **params) -> VectorStoreFile
+client.beta.vector.stores.files.retrieve(file_id, *, vector_store_id) -> VectorStoreFile
+client.beta.vector.stores.files.list(vector_store_id, **params) -> SyncCursorPage[VectorStoreFile]
+client.beta.vector.stores.files.delete(file_id, *, vector_store_id) -> VectorStoreFileDeleted
+client.beta.vector.stores.files.create_and_poll(*args) -> VectorStoreFile
+client.beta.vector.stores.files.poll(*args) -> VectorStoreFile
+client.beta.vector.stores.files.upload(*args) -> VectorStoreFile
+client.beta.vector.stores.files.upload_and_poll(*args) -> VectorStoreFile
+
+### FileBatches
+from openai.types.beta.vector_stores import VectorStoreFileBatch
+
+Methods:
+client.beta.vector.stores.file_batches.create(vector_store_id, **params) -> VectorStoreFileBatch
+client.beta.vector.stores.file_batches.retrieve(batch_id, *, vector_store_id) -> VectorStoreFileBatch
+client.beta.vector.stores.file_batches.cancel(batch_id, *, vector_store_id) -> VectorStoreFileBatch
+client.beta.vector.stores.file_batches.list_files(batch_id, *, vector_store_id, **params) -> SyncCursorPage[VectorStoreFile]
+client.beta.vector.stores.file_batches.create_and_poll(*args) -> VectorStoreFileBatch
+client.beta.vector.stores.file_batches.poll(*args) -> VectorStoreFileBatch
+client.beta.vector.stores.file_batches.upload_and_poll(*args) -> VectorStoreFileBatch
+
+## Assistants
+from openai.types.beta import (
+    Assistant,
+    AssistantDeleted,
+    AssistantStreamEvent,
+    AssistantTool,
+    CodeInterpreterTool,
+    FileSearchTool,
+    FunctionTool,
+    MessageStreamEvent,
+    RunStepStreamEvent,
+    RunStreamEvent,
+    ThreadStreamEvent,
+)
+
+Methods:
+client.beta.assistants.create(**params) -> Assistant
+client.beta.assistants.retrieve(assistant_id) -> Assistant
+client.beta.assistants.update(assistant_id, **params) -> Assistant
+client.beta.assistants.list(**params) -> SyncCursorPage[Assistant]
+client.beta.assistants.delete(assistant_id) -> AssistantDeleted
+
+## Threads
+from openai.types.beta import (
+    AssistantResponseFormatOption,
+    AssistantToolChoice,
+    AssistantToolChoiceFunction,
+    AssistantToolChoiceOption,
+    Thread,
+    ThreadDeleted,
+)
+
+Methods:
+client.beta.threads.create(**params) -> Thread
+client.beta.threads.retrieve(thread_id) -> Thread
+client.beta.threads.update(thread_id, **params) -> Thread
+client.beta.threads.delete(thread_id) -> ThreadDeleted
+client.beta.threads.create_and_run(**params) -> Run
+client.beta.threads.create_and_run_poll(*args) -> Run
+client.beta.threads.create_and_run_stream(*args) -> AssistantStreamManager[AssistantEventHandler]
+
+### Runs
+from openai.types.beta.threads import RequiredActionFunctionToolCall, Run, RunStatus
+
+Methods:
+client.beta.threads.runs.create(thread_id, **params) -> Run
+client.beta.threads.runs.retrieve(run_id, *, thread_id) -> Run
+client.beta.threads.runs.update(run_id, *, thread_id, **params) -> Run
+client.beta.threads.runs.list(thread_id, **params) -> SyncCursorPage[Run]
+client.beta.threads.runs.cancel(run_id, *, thread_id) -> Run
+client.beta.threads.runs.submit_tool_outputs(run_id, *, thread_id, **params) -> Run
+client.beta.threads.runs.create_and_poll(*args) -> Run
+client.beta.threads.runs.create_and_stream(*args) -> AssistantStreamManager[AssistantEventHandler]
+client.beta.threads.runs.poll(*args) -> Run
+client.beta.threads.runs.stream(*args) -> AssistantStreamManager[AssistantEventHandler]
+client.beta.threads.runs.submit_tool_outputs_and_poll(*args) -> Run
+client.beta.threads.runs.submit_tool_outputs_stream(*args) -> AssistantStreamManager[AssistantEventHandler]
+
+#### Steps
+from openai.types.beta.threads.runs import (
+    CodeInterpreterLogs,
+    CodeInterpreterOutputImage,
+    CodeInterpreterToolCall,
+    CodeInterpreterToolCallDelta,
+    FileSearchToolCall,
+    FileSearchToolCallDelta,
+    FunctionToolCall,
+    FunctionToolCallDelta,
+    MessageCreationStepDetails,
+    RunStep,
+    RunStepDelta,
+    RunStepDeltaEvent,
+    RunStepDeltaMessageDelta,
+    RunStepInclude,
+    ToolCall,
+    ToolCallDelta,
+    ToolCallDeltaObject,
+    ToolCallsStepDetails,
+)
+
+Methods:
+client.beta.threads.runs.steps.retrieve(step_id, *, thread_id, run_id, **params) -> RunStep
+client.beta.threads.runs.steps.list(run_id, *, thread_id, **params) -> SyncCursorPage[RunStep]
+
+### Messages
+from openai.types.beta.threads import (
+    Annotation,
+    AnnotationDelta,
+    FileCitationAnnotation,
+    FileCitationDeltaAnnotation,
+    FilePathAnnotation,
+    FilePathDeltaAnnotation,
+    ImageFile,
+    ImageFileContentBlock,
+    ImageFileDelta,
+    ImageFileDeltaBlock,
+    ImageURL,
+    ImageURLContentBlock,
+    ImageURLDelta,
+    ImageURLDeltaBlock,
+    Message,
+    MessageContent,
+    MessageContentDelta,
+    MessageContentPartParam,
+    MessageDeleted,
+    MessageDelta,
+    MessageDeltaEvent,
+    RefusalContentBlock,
+    RefusalDeltaBlock,
+    Text,
+    TextContentBlock,
+    TextContentBlockParam,
+    TextDelta,
+    TextDeltaBlock,
+)
+
+Methods:
+client.beta.threads.messages.create(thread_id, **params) -> Message
+client.beta.threads.messages.retrieve(message_id, *, thread_id) -> Message
+client.beta.threads.messages.update(message_id, *, thread_id, **params) -> Message
+client.beta.threads.messages.list(thread_id, **params) -> SyncCursorPage[Message]
+client.beta.threads.messages.delete(message_id, *, thread_id) -> MessageDeleted
+
+# BATCHES
+from openai.types import Batch, BatchError, BatchRequestCounts
+
+Methods:
+client.batches.create(**params) -> Batch
+client.batches.retrieve(batch_id) -> Batch
+client.batches.list(**params) -> SyncCursorPage[Batch]
+client.batches.cancel(batch_id) -> Batch
+
+# UPLOADS
+from openai.types import Upload
+
+Methods:
+client.uploads.create(**params) -> Upload
+client.uploads.cancel(upload_id) -> Upload
+client.uploads.complete(upload_id, **params) -> Upload
+
+## Parts
+from openai.types.uploads import UploadPart
+
+Methods:
+client.uploads.parts.create(upload_id, **params) -> UploadPart

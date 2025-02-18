@@ -7,14 +7,17 @@ modern-ai-chat/
     README.md
     STATE_MANAGEMENT.md
     UI_SPEC.md
-    check_files.py
     current_structure.txt
     generate_structure.py
+    git_files_push.py
+    git_files_sync_check.py
     sessions.example.json
     sessions.json
     .vscode/
         settings.json
         tasks.json
+    docs/
+        openai_api_reference.txt
     src/
         __init__.py
         api/
@@ -26,5 +29,11 @@ modern-ai-chat/
             qml_test.py
             qml/
                 ChatView.qml
+                InputBar.qml
+                MainWindow.qml
                 MessageDelegate.qml
+                SidebarView.qml
         utils/
+    utils/
+        session_manager.py
+        update_progress.py
