@@ -147,18 +147,21 @@ ApplicationWindow {
                 ScrollView {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    clip: true
                     
                     ListView {
                         id: messageList
                         anchors.fill: parent
-                        model: chatModel  // Koristi novi model
+                        model: chatModel
                         delegate: MessageDelegate {}
-                        spacing: 0  // Uklanjamo spacing između poruka
+                        spacing: 0
                         verticalLayoutDirection: ListView.BottomToTop
-                        clip: true
                         
-                        // Scroll do poslednje poruke
-                        onCountChanged: positionViewAtBeginning()
+                        onCountChanged: {
+                            if (count > 0) {
+                                positionViewAtEnd()
+                            }
+                        }
                     }
                 }
                 

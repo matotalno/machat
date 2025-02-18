@@ -3,7 +3,8 @@ import QtQuick.Controls 2.15
 
 Rectangle {
     id: messageRoot
-    width: ListView.view ? ListView.view.width : 0
+    width: parent ? parent.width : implicitWidth
+    implicitWidth: 600
     height: contentColumn.height
     color: model.isUser ? "#ffffff" : "#f7f7f8"
 
