@@ -34,7 +34,11 @@ def main():
         
         # Load resources
         from PySide6.QtCore import QResource
-        QResource.registerResource(os.path.join(os.path.dirname(__file__), "qml", "resources.rcc"))
+        qml_path = os.path.join(os.path.dirname(__file__), "qml")
+        components_path = os.path.join(qml_path, "components")
+        
+        # Dodaj putanje za resurse
+        QResource.registerResource(os.path.join(qml_path, "resources.rcc"))
         
         # Postavi stil za sve kontrole
         QQuickStyle.setStyle("Basic")
@@ -57,12 +61,9 @@ def main():
         bridge = QMLBridge(loop)
         
         # Dodaj putanje za QML module
-        qml_path = os.path.join(os.path.dirname(__file__), "qml")
-        components_path = os.path.join(qml_path, "components")
-        blocks_path = os.path.join(components_path, "blocks")
-        
         engine.addImportPath(qml_path)
         engine.addImportPath(components_path)
+        blocks_path = os.path.join(components_path, "blocks")
         engine.addImportPath(blocks_path)
         
         # Registruj dodatne module

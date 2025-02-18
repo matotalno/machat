@@ -1,0 +1,32 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        }
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/.*": true
+    },
+    "files.watcherExclude": {
+        "**/__pycache__/**": true,
+        "**/venv/**": true
+    },
+    "python.analysis.extraPaths": [
+        "./src"
+    ],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "[qml]": {
+        "editor.formatOnSave": true,
+        "files.trimTrailingWhitespace": true
+    },
+    "qml.formatting.enable": true
+}

@@ -69,6 +69,19 @@ modern-ai-chat/
 
 ## TRENUTNO STANJE (18.02.2024)
 
+### 🚨 Trenutni Problem
+- QML učitavanje komponenti ne radi zbog:
+  ```
+  QQmlApplicationEngine failed to load component
+  file:///c:/modern-ai-chat/src/ui/qml/ChatView.qml:270:25: 
+  Type Components.LoadingOverlay unavailable
+  file:///c:/modern-ai-chat/src/ui/qml/components/LoadingOverlay.qml:2:1: module "QtGraphicalEffects" is not installed
+  ```
+- Potrebno rešiti:
+  - [ ] QtGraphicalEffects modul nije instaliran
+  - [ ] LoadingOverlay komponenta nije dostupna
+  - [ ] Fallback efekata se koristi umesto pravih
+
 ### ✅ Implementirane Funkcionalnosti
 
 1. Core Chat:
@@ -80,34 +93,18 @@ modern-ai-chat/
    - [x] Basic message bubbles
    - [x] Avatar sistem
    - [x] Timestamp na porukama
-   - [x] Empty state za listu razgovora
-   - [x] Custom typing indicator
-   - [x] Action buttons (copy, thumbs up/down)
-   - [x] Loading spinner
-   - [x] Scroll to bottom button
 
 2. Input Sistem:
    - [x] Multiline TextEdit
    - [x] Enter = send
    - [x] Shift+Enter = novi red
    - [x] Send dugme
-   - [x] Disabled state tokom odgovora
-   - [x] Vizuelni feedback
 
-3. Session Management:
+3. Session Management (Basic):
    - [x] JSON storage format
    - [x] Kreiranje sesija
    - [x] Brisanje sesija
    - [x] Prebacivanje između sesija
-   - [x] Auto-kreiranje nove sesije
-   - [x] Perzistencija poruka
-
-4. UI Komponente:
-   - [x] MessageBlock sa akcijama
-   - [x] CustomTypingIndicator
-   - [x] ActionButton
-   - [x] LoadingSpinner
-   - [x] EmptyStateComponent
 
 ### ⚡ PRIORITET 1 - Core UI Components
 

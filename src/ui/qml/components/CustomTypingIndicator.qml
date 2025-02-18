@@ -23,33 +23,41 @@ Rectangle {
                 height: 6
                 radius: width/2
                 color: "#19c37d"
+                opacity: 0.6
                 
                 SequentialAnimation {
                     running: root.visible
                     loops: Animation.Infinite
                     
-                    PropertyAnimation {
+                    NumberAnimation {
                         target: parent
                         property: "y"
+                        from: 0
                         to: -5
-                        duration: 500
+                        duration: 600
                         easing.type: Easing.InOutQuad
                     }
                     
-                    PropertyAnimation {
+                    NumberAnimation {
                         target: parent
                         property: "y"
+                        from: -5
                         to: 0
-                        duration: 500
+                        duration: 600
                         easing.type: Easing.InOutQuad
                     }
                     
                     PauseAnimation {
-                        duration: index * 100
+                        duration: index * 200
                     }
                 }
             }
         }
+    }
+    
+    // Fade in/out animacija
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
     }
     
     Text {

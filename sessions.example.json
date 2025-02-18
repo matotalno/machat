@@ -1,0 +1,16 @@
+[{
+    "id": "example-session-id",
+    "title": "Example Chat Session",
+    "messages": [
+        {
+            "text": "Hello!",
+            "is_user": true,
+            "timestamp": "12:00"
+        },
+        {
+            "text": "Hi! How can I help you?",
+            "is_user": false,
+            "timestamp": "12:00"
+        }
+    ]
+}]

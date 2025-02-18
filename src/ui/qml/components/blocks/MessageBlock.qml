@@ -87,6 +87,25 @@ Rectangle {
                 color: "#000000"
                 font.pixelSize: 14
                 textFormat: Text.StyledText
+                
+                // Dodaj typing animaciju
+                opacity: text.length ? 1 : 0
+                Behavior on opacity {
+                    NumberAnimation { 
+                        duration: 300
+                        easing.type: Easing.OutCubic
+                    }
+                }
+                
+                // Smooth text reveal
+                visible: opacity > 0
+                scale: opacity
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 300
+                        easing.type: Easing.OutBack
+                    }
+                }
             }
             
             // Timestamp

@@ -1,0 +1,68 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🚀 Push to GitHub",
+            "type": "shell",
+            "command": "git add .; if ($?) { git commit -m \"${input:commitMessage}\"; if ($?) { git push } }",
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true,
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🔄 Pull from GitHub",
+            "type": "shell",
+            "command": "git pull",
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Format All Files",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "-m",
+                "black",
+                ".",
+                "&&",
+                "qmlformat",
+                "src/ui/qml/*.qml",
+                "src/ui/qml/components/*.qml"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitMessage",
+            "description": "💬 Unesi commit poruku:",
+            "default": "Update project files",
+            "type": "promptString"
+        }
+    ]
+}

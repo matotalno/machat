@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Basic  // Dodajemo Basic stil
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import Qt5Compat.GraphicalEffects  // Dodaj ovo
 import "components" as Components
 import "components/blocks" as Blocks  // Dodaj ovo
 
@@ -208,8 +209,8 @@ ApplicationWindow {
                         }
                         
                         // Smooth scrolling postavke
-                        flickDeceleration: 1500
-                        maximumFlickVelocity: 2500
+                        flickDeceleration: 3000
+                        maximumFlickVelocity: 3000
                         boundsBehavior: Flickable.StopAtBounds
                         
                         // Praćenje novih poruka
@@ -247,6 +248,30 @@ ApplicationWindow {
                                 velocity: 800  // Brža početna brzina
                                 easing.type: Easing.OutCubic  // Prirodniji efekat
                             }
+                        }
+                        
+                        // Dodaj animacije za nove poruke
+                        add: Transition {
+                            NumberAnimation { 
+                                properties: "y"
+                                from: 50
+                                duration: 300
+                                easing.type: Easing.OutCubic
+                            }
+                            NumberAnimation { 
+                                properties: "opacity"
+                                from: 0
+                                to: 1
+                                duration: 300
+                            }
+                        }
+
+                        // Dodaj loading overlay
+                        Components.LoadingOverlay {
+                            id: loadingOverlay
+                            anchors.fill: parent
+                            visible: typingIndicator.visible
+                            opacity: visible ? 1 : 0
                         }
                     }
                     

@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Button {
-    id: root
+    id: control
     
     property string iconSource
     property color iconColor: "#666666"
@@ -13,22 +13,43 @@ Button {
     flat: true
     
     background: Rectangle {
-        color: "transparent"
+        color: control.hovered ? Qt.lighter(control.hoverColor, 1.8) : "transparent"
         radius: 4
         
-        Rectangle {
-            anchors.fill: parent
-            color: root.hovered ? Qt.alpha(root.hoverColor, 0.1) : "transparent"
-            radius: 4
+        Behavior on color {
+            ColorAnimation { duration: 150 }
         }
     }
     
     contentItem: Image {
-        source: root.iconSource
+        source: control.iconSource
         sourceSize: Qt.size(16, 16)
-        fillMode: Image.PreserveAspectFit
+        
+        // Fallback bez ColorOverlay
+        opacity: control.enabled ? 1.0 : 0.3
+        
+        Behavior on opacity {
+            NumberAnimation { duration: 150 }
+        }
     }
     
-    ToolTip.visible: hovered
-    ToolTip.delay: 500
+    ToolTip {
+        visible: control.hovered
+        text: control.ToolTip.text
+        delay: 500
+        timeout: 2000
+        padding: 8
+        
+        contentItem: Text {
+            text: control.ToolTip.text
+            color: "white"
+            font.pixelSize: 12
+        }
+        
+        background: Rectangle {
+            color: "#1e1e1e"
+            radius: 4
+            opacity: 0.95
+        }
+    }
 }

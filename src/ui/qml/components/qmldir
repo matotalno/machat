@@ -1,12 +1,13 @@
 module Components
+LoadingOverlay 1.0 LoadingOverlay.qml
+LoadingSpinner 1.0 LoadingSpinner.qml
+ActionButton 1.0 ActionButton.qml
+CustomTypingIndicator 1.0 CustomTypingIndicator.qml
 MessageBlock 1.0 blocks/MessageBlock.qml
+ModernToolTip 1.0 ModernToolTip.qml
 TypingIndicator 1.0 TypingIndicator.qml
 CodeViewer 1.0 CodeViewer.qml
 MarkdownRenderer 1.0 MarkdownRenderer.qml
-ActionButton 1.0 ActionButton.qml
-CustomTypingIndicator 1.0 CustomTypingIndicator.qml
-LoadingSpinner 1.0 LoadingSpinner.qml
-ModernToolTip 1.0 ModernToolTip.qml
 RippleButton 1.0 RippleButton.qml
 SmoothScrollView 1.0 SmoothScrollView.qml
 BlurredOverlay 1.0 BlurredOverlay.qml

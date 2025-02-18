@@ -1,4 +1,5 @@
 module Blocks
-EmptyStateComponent 1.0 EmptyStateComponent.qml
 MessageBlock 1.0 MessageBlock.qml
+CodeBlock 1.0 CodeBlock.qml
+EmptyStateComponent 1.0 EmptyStateComponent.qml
 ParagraphBlock 1.0 ParagraphBlock.qml

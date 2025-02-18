@@ -24,18 +24,22 @@ def check_versions():
     print(f"{Fore.YELLOW}Python version: {sys.version}{Style.RESET_ALL}\n")
     
     all_ok = True
+    missing_packages = []
+    
     for package in REQUIRED_PACKAGES:
         try:
             version = importlib.metadata.version(package)
             print(f"{Fore.GREEN}✓ {package}: {version}{Style.RESET_ALL}")
         except importlib.metadata.PackageNotFoundError:
             print(f"{Fore.RED}✗ {package}: Not installed{Style.RESET_ALL}")
+            missing_packages.append(package)
             all_ok = False
     
     if all_ok:
         print(f"\n{Fore.GREEN}All required packages are installed!{Style.RESET_ALL}")
     else:
-        print(f"\n{Fore.RED}Some packages are missing. Please install them.{Style.RESET_ALL}")
+        print(f"\n{Fore.RED}Missing packages:{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}pip install " + " ".join(missing_packages) + f"{Style.RESET_ALL}")
 
 if __name__ == "__main__":
     check_versions()
