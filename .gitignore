@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+
+# IDE settings - comment out .vscode to allow sharing settings
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Qt/QML
+*.qmlc
+*.jsc
+
+# Log files
+*.log
+
+# Temp files
+*.tmp
+
+# Sessions backup
+sessions.json.bak
+
+# Chat sessions
+sessions.json
+sessions*.json
