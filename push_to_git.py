@@ -24,6 +24,21 @@ def run_command(command):
 def main():
     print_colored("\n=== GitHub Push Tool ===\n", Fore.CYAN)
     
+    # Check current branch
+    branch = subprocess.run("git branch --show-current", 
+                          shell=True, capture_output=True, text=True)
+    print_colored(f"Current branch: {branch.stdout}", Fore.GREEN)
+    
+    # Proveri git status pre početka
+    if not run_command("git status"):
+        print_colored("ERROR: Not a git repository or git not installed", Fore.RED)
+        return
+        
+    # Proveri remote connection
+    if not run_command("git remote -v"):
+        print_colored("ERROR: No remote repository configured", Fore.RED)
+        return
+    
     # Add all changes
     print_colored("➡️ Adding changes...", Fore.BLUE)
     if not run_command("git add ."):
@@ -35,7 +50,8 @@ def main():
     
     # Create commit
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-    commit_msg = f"Update {timestamp}"
+    custom_msg = input("Enter custom commit message (or press Enter for timestamp): ").strip()
+    commit_msg = custom_msg if custom_msg else f"Update {timestamp}"
     print_colored(f"\n➡️ Creating commit: {commit_msg}", Fore.BLUE)
     if not run_command(f'git commit -m "{commit_msg}"'):
         return
