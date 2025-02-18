@@ -266,12 +266,16 @@ ApplicationWindow {
                             }
                         }
 
-                        // Dodaj loading overlay
-                        Components.LoadingOverlay {
-                            id: loadingOverlay
-                            anchors.fill: parent
-                            visible: typingIndicator.visible
-                            opacity: visible ? 1 : 0
+                        // Ukloniti stari LoadingOverlay i zameniti ga sa:
+                        footer: Item {
+                            width: messageList.width
+                            height: 60
+                            
+                            Components.LoadingOverlay {
+                                id: loadingOverlay
+                                anchors.centerIn: parent
+                                visible: typingIndicator.visible
+                            }
                         }
                     }
                     
@@ -374,11 +378,11 @@ ApplicationWindow {
                 }
                 
                 // Typing indicator
-                Components.CustomTypingIndicator {
+                Item {
                     id: typingIndicator
                     Layout.fillWidth: true
-                    Layout.leftMargin: 16
-                    Layout.bottomMargin: 8
+                    height: 0  // Sakrivamo stari typing indicator
+                    visible: false
                 }
 
                 // Input area

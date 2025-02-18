@@ -6,54 +6,131 @@
 from PySide6 import QtCore
 
 qt_resource_data = b"\
-\x00\x00\x02\xdc\
+\x00\x00\x07\xaa\
 i\
 mport QtQuick 2.\
 15\x0d\x0a\x0d\x0aItem {\x0d\x0a  \
   id: root\x0d\x0a    \
-width: 32\x0d\x0a    h\
-eight: 32\x0d\x0a    v\
-isible: false\x0d\x0a \
-   \x0d\x0a    propert\
-y bool running: \
-false\x0d\x0a    prope\
-rty color color:\
- \x22#19c37d\x22\x0d\x0a    \
-\x0d\x0a    Rectangle \
-{\x0d\x0a        ancho\
-rs.centerIn: par\
-ent\x0d\x0a        wid\
-th: parent.width\
-\x0d\x0a        height\
-: width\x0d\x0a       \
- radius: width/2\
-\x0d\x0a        color:\
- \x22transparent\x22\x0d\x0a\
-        border.w\
-idth: 3\x0d\x0a       \
+\x0d\x0a    property b\
+ool running: fal\
+se\x0d\x0a    property\
+ int size: paren\
+t.height * 0.5\x0d\x0a\
+    property col\
+or color: \x22#19c3\
+7d\x22\x0d\x0a\x0d\x0a    width\
+: size\x0d\x0a    heig\
+ht: size\x0d\x0a    vi\
+sible: running\x0d\x0a\
+    opacity: run\
+ning ? 1 : 0\x0d\x0a  \
+  \x0d\x0a    Behavior\
+ on opacity {\x0d\x0a \
+       NumberAni\
+mation { duratio\
+n: 200 }\x0d\x0a    }\x0d\
+\x0a    \x0d\x0a    // Gl\
+avni spinner kru\
+g\x0d\x0a    Rectangle\
+ {\x0d\x0a        id: \
+spinner\x0d\x0a       \
+ anchors.fill: p\
+arent\x0d\x0a        r\
+adius: width/2\x0d\x0a\
+        color: \x22\
+transparent\x22\x0d\x0a  \
+      border.wid\
+th: width/10\x0d\x0a  \
+      border.col\
+or: root.color\x0d\x0a\
+        \x0d\x0a      \
+  RotationAnimat\
+ion {\x0d\x0a         \
+   target: spinn\
+er\x0d\x0a            \
+from: 0\x0d\x0a       \
+     to: 360\x0d\x0a  \
+          durati\
+on: 1000\x0d\x0a      \
+      loops: Ani\
+mation.Infinite\x0d\
+\x0a            run\
+ning: root.runni\
+ng\x0d\x0a        }\x0d\x0a \
+       \x0d\x0a       \
+ // Dodatni grad\
+ijent efekat\x0d\x0a  \
+      Rectangle \
+{\x0d\x0a            a\
+nchors.fill: par\
+ent\x0d\x0a           \
+ radius: parent.\
+radius\x0d\x0a        \
+    gradient: Gr\
+adient {\x0d\x0a      \
+          Gradie\
+ntStop { positio\
+n: 0.0; color: r\
+oot.color }\x0d\x0a   \
+             Gra\
+dientStop { posi\
+tion: 0.5; color\
+: \x22transparent\x22 \
+}\x0d\x0a            }\
+\x0d\x0a            op\
+acity: 0.2\x0d\x0a    \
+        \x0d\x0a      \
+      RotationAn\
+imation {\x0d\x0a     \
+           targe\
+t: parent\x0d\x0a     \
+           from:\
+ 180\x0d\x0a          \
+      to: 540\x0d\x0a \
+               d\
+uration: 1500\x0d\x0a \
+               l\
+oops: Animation.\
+Infinite\x0d\x0a      \
+          runnin\
+g: root.running\x0d\
+\x0a            }\x0d\x0a\
+        }\x0d\x0a    }\
+\x0d\x0a    \x0d\x0a    // M\
+anji unutra\xc5\xa1nji\
+ krug koji se vr\
+ti u suprotnom s\
+meru\x0d\x0a    Rectan\
+gle {\x0d\x0a        a\
+nchors.centerIn:\
+ parent\x0d\x0a       \
+ width: parent.w\
+idth * 0.6\x0d\x0a    \
+    height: widt\
+h\x0d\x0a        radiu\
+s: width/2\x0d\x0a    \
+    color: \x22tran\
+sparent\x22\x0d\x0a      \
+  border.width: \
+width/8\x0d\x0a       \
  border.color: r\
 oot.color\x0d\x0a     \
-   opacity: root\
-.running ? 1 : 0\
-\x0d\x0a        \x0d\x0a    \
-    RotationAnim\
-ation {\x0d\x0a       \
-     target: par\
-ent\x0d\x0a           \
- running: root.r\
-unning\x0d\x0a        \
-    from: 0\x0d\x0a   \
-         to: 360\
-\x0d\x0a            du\
-ration: 1000\x0d\x0a  \
-          loops:\
- Animation.Infin\
-ite\x0d\x0a        }\x0d\x0a\
-    }\x0d\x0a    \x0d\x0a   \
- onRunningChange\
-d: {\x0d\x0a        vi\
-sible = running\x0d\
-\x0a    }\x0d\x0a}\x0d\x0a\
+   opacity: 0.7\x0d\
+\x0a        \x0d\x0a     \
+   RotationAnima\
+tion {\x0d\x0a        \
+    target: pare\
+nt\x0d\x0a            \
+from: 360\x0d\x0a     \
+       to: 0\x0d\x0a  \
+          durati\
+on: 1500\x0d\x0a      \
+      loops: Ani\
+mation.Infinite\x0d\
+\x0a            run\
+ning: root.runni\
+ng\x0d\x0a        }\x0d\x0a \
+   }\x0d\x0a}\x0d\x0a\
 \x00\x00\x04\xe2\
 i\
 mport QtQuick 2.\
@@ -135,7 +212,7 @@ ectangle {\x0d\x0a    \
 city: 0.95\x0d\x0a    \
     }\x0d\x0a    }\x0d\x0a}\x0d\
 \x0a\
-\x00\x00\x05f\
+\x00\x00\x04\x8d\
 i\
 mport QtQuick 2.\
 15\x0d\x0aimport QtQui\
@@ -144,181 +221,279 @@ ck.Controls 2.15\
 Components\x0d\x0a\x0d\x0aRe\
 ctangle {\x0d\x0a    i\
 d: root\x0d\x0a    wid\
-th: 60\x0d\x0a    heig\
-ht: 60\x0d\x0a    radi\
-us: 30\x0d\x0a    colo\
-r: \x22#ffffff\x22\x0d\x0a  \
-  opacity: 0.95\x0d\
-\x0a    visible: fa\
-lse\x0d\x0a    \x0d\x0a    /\
-/ Centriranje u \
-parent\x0d\x0a    anch\
-ors.centerIn: pa\
-rent\x0d\x0a    \x0d\x0a    \
-// Dodaj senku\x0d\x0a\
-    Rectangle {\x0d\
-\x0a        id: sha\
-dow\x0d\x0a        anc\
-hors.fill: paren\
-t\x0d\x0a        ancho\
-rs.margins: -2\x0d\x0a\
-        radius: \
-parent.radius + \
-2\x0d\x0a        color\
-: \x22#20000000\x22\x0d\x0a \
-       z: -1\x0d\x0a  \
-  }\x0d\x0a    \x0d\x0a    C\
-omponents.Loadin\
-gSpinner {\x0d\x0a    \
+th: 44\x0d\x0a    heig\
+ht: 44\x0d\x0a    radi\
+us: width/2\x0d\x0a   \
+ color: \x22#ffffff\
+\x22\x0d\x0a    opacity: \
+0\x0d\x0a    visible: \
+opacity > 0\x0d\x0a   \
+ \x0d\x0a    // Centri\
+ranje u parent\x0d\x0a\
     anchors.cent\
 erIn: parent\x0d\x0a  \
-      running: r\
-oot.visible\x0d\x0a   \
-     size: 30  /\
-/ Manji spinner\x0d\
-\x0a    }\x0d\x0a\x0d\x0a    //\
- Fade in/out\x0d\x0a  \
-  Behavior on op\
-acity {\x0d\x0a       \
- NumberAnimation\
- { duration: 200\
- }\x0d\x0a    }\x0d\x0a    \x0d\
-\x0a    // Scale an\
-imation\x0d\x0a    tra\
-nsform: Scale {\x0d\
-\x0a        id: sca\
-leTransform\x0d\x0a   \
-     origin.x: r\
-oot.width/2\x0d\x0a   \
-     origin.y: r\
-oot.height/2\x0d\x0a  \
-  }\x0d\x0a    \x0d\x0a    /\
-/ Appear animati\
-on\x0d\x0a    Parallel\
-Animation {\x0d\x0a   \
-     id: appearA\
-nimation\x0d\x0a      \
-  running: root.\
-visible\x0d\x0a       \
- \x0d\x0a        Numbe\
-rAnimation {\x0d\x0a  \
-          target\
-: root\x0d\x0a        \
-    property: \x22o\
-pacity\x22\x0d\x0a       \
-     from: 0; to\
+  \x0d\x0a    // Dodaj\
+ senku\x0d\x0a    Rect\
+angle {\x0d\x0a       \
+ id: shadow\x0d\x0a   \
+     anchors.fil\
+l: parent\x0d\x0a     \
+   anchors.margi\
+ns: -2\x0d\x0a        \
+radius: parent.r\
+adius + 2\x0d\x0a     \
+   color: \x22#2000\
+0000\x22\x0d\x0a        z\
+: -1\x0d\x0a    }\x0d\x0a   \
+ \x0d\x0a    Component\
+s.LoadingSpinner\
+ {\x0d\x0a        anch\
+ors.centerIn: pa\
+rent\x0d\x0a        ru\
+nning: root.visi\
+ble\x0d\x0a        siz\
+e: 24\x0d\x0a    }\x0d\x0a\x0d\x0a\
+    // Fade in/o\
+ut\x0d\x0a    Behavior\
+ on opacity {\x0d\x0a \
+       NumberAni\
+mation { duratio\
+n: 150 }\x0d\x0a    }\x0d\
+\x0a    \x0d\x0a    // Sc\
+ale animation\x0d\x0a \
+   Behavior on s\
+cale {\x0d\x0a        \
+NumberAnimation \
+{ \x0d\x0a            \
+duration: 200 \x0d\x0a\
+            easi\
+ng.type: Easing.\
+OutBack\x0d\x0a       \
+     easing.over\
+shoot: 1.2\x0d\x0a    \
+    }\x0d\x0a    }\x0d\x0a\x0d\x0a\
+    // States\x0d\x0a \
+   states: [\x0d\x0a  \
+      State {\x0d\x0a \
+           name:\
+ \x22visible\x22\x0d\x0a    \
+        when: ro\
+ot.visible\x0d\x0a    \
+        Property\
+Changes {\x0d\x0a     \
+           targe\
+t: root\x0d\x0a       \
+         opacity\
 : 0.95\x0d\x0a        \
-    duration: 20\
-0\x0d\x0a        }\x0d\x0a  \
-      NumberAnim\
-ation {\x0d\x0a       \
-     target: sca\
-leTransform\x0d\x0a   \
-         propert\
-y: \x22scale\x22\x0d\x0a    \
-        from: 0.\
-8; to: 1.0\x0d\x0a    \
-        duration\
-: 200\x0d\x0a         \
-   easing.type: \
-Easing.OutBack\x0d\x0a\
-        }\x0d\x0a    }\
-\x0d\x0a}\x0d\x0a\
-\x00\x00\x03\xfd\
-\x00\
-\x00\x0f\xb1x\xda\xc5WYo\xdb8\x10~\x0f\x90\xff\
-\xc0\xaa/\x09\x8a\xa5\x8f4G\x05\xec.\xec\xec\x81\x02\
-\xdb+I\x91g\x9a\xa2%\xb6\x94\xa8%)\xa7n\xe1\
-\xff\xbeCQ\xb2$\x8b\x8a]l\x8a\xd2\x86-\xce\x0c\
-\xc9\x99o.\x8a\xa7\xb9T\x06}0\x1f\x0aN?\xa3\
-)\x9e\x9c\x1f\x1f\xf1\x0e\x11_\xcb\xcc()\xb4\x9f\xfb\
-\x0fY\xcb\xc2h4i3\x03\x8cG\x01\x22\x1a]K\
- d,\x03\x014\x1a\xa1?dD>\xa1J\xe8+\
-i\xb1\x8f\x8f\x8e\x8fn\x185$\x8b\x05C\xdf\x8e\x8f\
-\x10\x0c\x1e\x85HIi\xdc\xec\x81G&\x09QN\x14\
-,\xc0\xe5\xcc1\x12\xc6\xe3\xc4\x84(eZ\x93\x989\
-\x8d\xb0\xa3\xa2\x17\xe8l\xea\xc4\xa8\x14R\x85\x88\xeb\x8f\
-\x9a)\xf4;\x0a\x9e//\xe1s\x15\xa0\xd0>\x97#\
-p\xa2\xee7W2g\xca\xac\xd1BJQ\xad\x0b\xd1\
-\x92\x08\xcdv\x04\xb4Q<\x8bk\x05`\xbb\xc0/`\
-8\x88\x18\x92\xe6\x8d\x88\xfb\x9d\xb3\x84\xac\xb8THf\
-H\xe6\x84rXS\x81`\xc7\xdb\x22]05\xcbx\
-J\x0c\x07\x91o(*T\xf9\x18\xa2\xe9x\x8c6N\
-t3\xb4\xa5\xa6\xa4A\xd5\xbfa\xc3\xb3\xa3\xd9~r\
->\xde\xe11\xa2\xc1\x16l\xd69X\xfa\xa7\x9b\xbc+\
- \x1cH\xd4\x92\xf4\xa9\xb4u7\x96\x99}\x16\xcc0\
-pqK\xaf\xda\xf6_\xd1\xb8!:\xed\x81\x84_5\
-D\xd8E\xad\xb7\x06`@U\x99\x93S\xcf\xa1\xef\x89\
-\x22B0\xd12\xb6\xd9\xc5FXw\xa7\x86\xf7\x08Z\
-]@\xe0\xe8\x98\x99v\xa8\xd6\xa3\xf6?\xb8\xbb\xb2,\
-\xd8Y*\x01\xe1!\xe8\xc1\xb3=<\x9f^\xb1\x12\xdd\
-\xefQ\xeb\xac\xad\xd6#\x011'\xf4\xb3WP\xae\x98\
-\xd2\x09\xe8\x04\x87\xe0\xf1t_\xcc\x88\x22\xcd\x5cN\xef\
-z\xae\x93\xf0\x0d\x8bd4\x91J\xef\xa2!\xd8\xd2l\
-\xcb\x87\x9dt\xd9\xca\x15\x91\x8a_\xcevA\xc9\xb7l\
-x\xee2S\x80\x9ag\x1a,\xba\xf0\xfaL[\xf7g\
-q\x88\xae|~\xbc\x91\x0f}\x0b\xed\xa8j\xd9\x92\x0b\
-q\xef\xca\x9fQ\x05\xeb\xcal\xb7\x9eL\xbb\x8c\xee\x0c\
-\xca\xeflE $\xba\xe4^\xd1m\x8f\xaa\xe4\x9e\x8d\
-\xfb\xac\xba\xe8\xfax\x8aD\xbc\xb0X\x9c\xf7y\xfd*\
-<!\x97\xcb\x8b\x97\xae\x0aO^\xd1\xb3\xcb(\xe8/\
-\xebS\xee\xd8\x17\xe3\xd3\xb9\x15\x01\x98\x82\xaf\x98z\x9d\
-\xd5~\xf3K\x1b\xd8\xa9\xad\xd1\xc7R\x97\xd9\xeb\xc0/\
-^Y\x10<$\xdc\xb0\x01\x99%\xf4L\x9c\xf3/L\
-\xdc\xf2\xaf\x90\x15\x93\x97}\xb9M\x97\xb4\xd9\xe3\xbc7\
-.\xd8Km\xbb\xcc!$\x0e\x09\x9e\xc6\xfe*\x99<\
-A\xa0H\xfeFF`\x85=\x08\xdfK\x15\xdd\x03i\
-\xd0\xb5\xc1\xf3q9<\xd0\x1c\x02\x8b\xd5\xe6/\xa9\xa0\
-\xa2U\x07\xde\x9a\xb5`\xd1]\xcfl\x7fXlo\x19\
-P\x8el\xcb%\xb68R\xfe\xa9\xe8\x8bV%9,\
-\x8f\x84\x8a\x90\xc5&\x01\xffO\xc0\xfb\x9e\xa0\xde\xd3\xa2\
-\xdbc_w=\xb0\xae\x1ePc\xaf\x8b\x05\xa7\xfeU\
-\x9b\xbd\x117\x08\xe0m\x0a\xc59)aA\x8a\xad\x18\
-\x11}\xb1\x15\xd7|!@\x99\x1a\x8b\xdf|\xa0\x95\xcd\
-e+\xf38\xa8\xbdK\xca\xa3\x90\xfe(D\xfb]\xeb\
-p@\xf7\xa5\xf0]}\xfd;,\x7f]^\x1a\xff\xa2\
-N\xc2]\x94\xe3\x90\x84\x9b\x0ej\xbc\x19hL\xbb\x9a\
-m\x1d\xff\xccU\xcc\x81ft\xe5mdD\xf08K\
-\xa1\x12\x87\xf0\x02\x81gvv\xd3\xef\xb4\xddY\xf3\x92\
-\x80g\xd4:v^\x18\xe3\x0f\x01Nev+\x0bE\
-\xed\x1d\xfc_E\xc3\x91\xa5\xe8\x11\x95\xf9\x1a\xebU\x1c\
-\x94nx\xaf$\xa8@\x90&\xc8\xf1\x11L\x1aiO\
-\xab\x81\xfb\xff\x1d\xcf\xb1sHp\x0d\xbb\xd5\xe5\xd2\x83\
-9\xdcm\x05\xbc\x19\xd9\x9b-\x15<_H\xa2\x22\xac\
-\x99\xb1n>\xa9\x96\x9d~G\xe0<\x81\xfd&\x81\xf4\
-\xd1\xbf\x14\xf9\xd3\x81\xf0\xb7\x94\x11\x14\x07\x0d\xaa\xe9}\
-($\xc4\xcc\x15\x8fb\x86!3Y\xd5\xc8Nl3\
-\xfa98D\xf2!{:$\xe6\xe4\x7f\x02Q\xbeQ\
-\x9e\xeeKL\xf8\x83\xef\x7f\xe3\x99\xcf\x08\
-\x00\x00\x01\x95\
+    }\x0d\x0a        }\
+\x0d\x0a    ]\x0d\x0a}\x0d\x0a\
+\x00\x00\x0bN\
+i\
+mport QtQuick 2.\
+15\x0d\x0aimport QtQui\
+ck.Controls 2.15\
+\x0d\x0aimport QtQuick\
+.Layouts 1.15\x0d\x0ai\
+mport \x22../\x22 as C\
+omponents  // Do\
+daj import za Co\
+mponents\x0d\x0a\x0d\x0aRect\
+angle {\x0d\x0a    id:\
+ root\x0d\x0a    width\
+: parent.width\x0d\x0a\
+    height: cont\
+entColumn.height\
+ + 32\x0d\x0a    color\
+: isUser ? \x22#f7f\
+7f8\x22 : \x22white\x22\x0d\x0a\
+    \x0d\x0a    proper\
+ty bool isUser: \
+false\x0d\x0a    prope\
+rty string messa\
+ge: \x22\x22\x0d\x0a    prop\
+erty string time\
+stamp: \x22\x22\x0d\x0a    \x0d\
+\x0a    Behavior on\
+ opacity {\x0d\x0a    \
+    NumberAnimat\
+ion { duration: \
+200 }\x0d\x0a    }\x0d\x0a  \
+  \x0d\x0a    Behavior\
+ on scale {\x0d\x0a   \
+     NumberAnima\
+tion { \x0d\x0a       \
+     duration: 1\
+50 \x0d\x0a           \
+ easing.type: Ea\
+sing.OutQuad \x0d\x0a \
+       }\x0d\x0a    }\x0d\
+\x0a    \x0d\x0a    Compo\
+nent.onCompleted\
+: {\x0d\x0a        opa\
+city = 0\x0d\x0a      \
+  scale = 0.9\x0d\x0a \
+       entryAnim\
+ation.start()\x0d\x0a \
+   }\x0d\x0a    \x0d\x0a    \
+ParallelAnimatio\
+n {\x0d\x0a        id:\
+ entryAnimation\x0d\
+\x0a        \x0d\x0a     \
+   NumberAnimati\
+on {\x0d\x0a          \
+  target: root\x0d\x0a\
+            prop\
+erty: \x22opacity\x22\x0d\
+\x0a            to:\
+ 1\x0d\x0a            \
+duration: 200\x0d\x0a \
+       }\x0d\x0a      \
+  \x0d\x0a        Numb\
+erAnimation {\x0d\x0a \
+           targe\
+t: root\x0d\x0a       \
+     property: \x22\
+scale\x22\x0d\x0a        \
+    to: 1\x0d\x0a     \
+       duration:\
+ 300\x0d\x0a          \
+  easing.type: E\
+asing.OutBack\x0d\x0a \
+           easin\
+g.overshoot: 1.0\
+2\x0d\x0a        }\x0d\x0a  \
+  }\x0d\x0a    \x0d\x0a    C\
+olumn {\x0d\x0a       \
+ id: contentColu\
+mn\x0d\x0a        anch\
+ors {\x0d\x0a         \
+   left: parent.\
+left\x0d\x0a          \
+  right: parent.\
+right\x0d\x0a         \
+   margins: 16\x0d\x0a\
+            vert\
+icalCenter: pare\
+nt.verticalCente\
+r\x0d\x0a        }\x0d\x0a  \
+      spacing: 8\
+\x0d\x0a        \x0d\x0a    \
+    TextEdit {\x0d\x0a\
+            id: \
+messageText\x0d\x0a   \
+         width: \
+parent.width\x0d\x0a  \
+          text: \
+root.message\x0d\x0a  \
+          wrapMo\
+de: Text.WordWra\
+p\x0d\x0a            r\
+eadOnly: true\x0d\x0a \
+           selec\
+tByMouse: true  \
+// Omogu\xc4\x87ava se\
+lekciju\x0d\x0a       \
+     selectedTex\
+tColor: \x22white\x22\x0d\
+\x0a            sel\
+ectionColor: \x22#1\
+9c37d\x22\x0d\x0a        \
+    color: \x22#343\
+541\x22\x0d\x0a          \
+  font.pixelSize\
+: 14\x0d\x0a          \
+  \x0d\x0a            \
+// Stil za link-\
+ove\x0d\x0a           \
+ onLinkActivated\
+: (link) => Qt.o\
+penUrlExternally\
+(link)\x0d\x0a        \
+    MouseArea {\x0d\
+\x0a               \
+ anchors.fill: p\
+arent\x0d\x0a         \
+       acceptedB\
+uttons: Qt.NoBut\
+ton\x0d\x0a           \
+     cursorShape\
+: parent.hovered\
+Link ? Qt.Pointi\
+ngHandCursor : Q\
+t.IBeamCursor\x0d\x0a \
+           }\x0d\x0a  \
+      }\x0d\x0a\x0d\x0a     \
+   Row {\x0d\x0a      \
+      spacing: 8\
+\x0d\x0a            vi\
+sible: !isUser\x0d\x0a\
+            \x0d\x0a  \
+          Compon\
+ents.ActionButto\
+n {\x0d\x0a           \
+     iconSource:\
+ \x22qrc:/icons/cop\
+y.svg\x22\x0d\x0a        \
+        ToolTip.\
+text: \x22Copy\x22\x0d\x0a  \
+              on\
+Clicked: {\x0d\x0a    \
+                \
+messageText.sele\
+ctAll()\x0d\x0a       \
+             mes\
+sageText.copy()\x0d\
+\x0a               \
+     messageText\
+.deselect()\x0d\x0a   \
+             }\x0d\x0a\
+            }\x0d\x0a \
+           \x0d\x0a   \
+         Compone\
+nts.ActionButton\
+ {\x0d\x0a            \
+    iconSource: \
+\x22qrc:/icons/thum\
+bs-up.svg\x22\x0d\x0a    \
+            Tool\
+Tip.text: \x22Like\x22\
+\x0d\x0a            }\x0d\
+\x0a            \x0d\x0a \
+           Compo\
+nents.ActionButt\
+on {\x0d\x0a          \
+      iconSource\
+: \x22qrc:/icons/th\
+umbs-down.svg\x22\x0d\x0a\
+                \
+ToolTip.text: \x22D\
+islike\x22\x0d\x0a       \
+     }\x0d\x0a        \
+}\x0d\x0a    }\x0d\x0a}\x0d\x0a\
+\x00\x00\x01H\
 <\
-svg width=\x2224\x22 h\
-eight=\x2224\x22 viewB\
-ox=\x220 0 24 24\x22 f\
-ill=\x22none\x22 xmlns\
-=\x22http://www.w3.\
-org/2000/svg\x22>\x0d\x0a\
-<path d=\x22M2 20h2\
-c.55 0 1-.45 1-1\
-v-9c0-.55-.45-1-\
-1-1H2v11zm19.83-\
-7.12c.11-.25.17-\
-.52.17-.8V11c0-1\
-.1-.9-2-2-2h-5.5\
-l.92-4.65c.05-.2\
-2.02-.46-.08-.66\
--.23-.45-.52-.86\
--.88-1.22L14 2 7\
-.59 8.41C7.21 8.\
-79 7 9.3 7 9.83v\
-7.84C7 18.95 8.0\
-5 20 9.34 20h8.1\
-1c.7 0 1.36-.37 \
-1.72-.97l2.66-6.\
-15z\x22 fill=\x22curre\
-ntColor\x22/>\x0d\x0a</sv\
-g>\x0d\x0a\
-\x00\x00\x01\x1c\
+svg xmlns=\x22http:\
+//www.w3.org/200\
+0/svg\x22 width=\x2224\
+\x22 height=\x2224\x22 vi\
+ewBox=\x220 0 24 24\
+\x22 fill=\x22none\x22 st\
+roke=\x22currentCol\
+or\x22 stroke-width\
+=\x222\x22 stroke-line\
+cap=\x22round\x22 stro\
+ke-linejoin=\x22rou\
+nd\x22>\x0d\x0a  <path d=\
+\x22M14 9V5a3 3 0 0\
+ 0-3-3l-4 9v11h1\
+1.28a2 2 0 0 0 2\
+-1.7l1.38-9a2 2 \
+0 0 0-2-2.3zM7 2\
+2H4a2 2 0 0 1-2-\
+2v-7a2 2 0 0 1 2\
+-2h3\x22></path>\x0d\x0a<\
+/svg>\x0d\x0a\
+\x00\x00\x02j\
 <\
 svg width=\x2224\x22 h\
 eight=\x2224\x22 viewB\
@@ -337,34 +512,52 @@ V17H4V3H16V1ZM19\
 1 5 19 5ZM19 21H\
 8V7H19V21Z\x22 fill\
 =\x22currentColor\x22/\
->\x0d\x0a</svg>\x0d\x0a\
-\x00\x00\x01\x8e\
+>\x0d\x0a</svg>\x0d\x0a<svg \
+xmlns=\x22http://ww\
+w.w3.org/2000/sv\
+g\x22 width=\x2224\x22 he\
+ight=\x2224\x22 viewBo\
+x=\x220 0 24 24\x22 fi\
+ll=\x22none\x22 stroke\
+=\x22currentColor\x22 \
+stroke-width=\x222\x22\
+ stroke-linecap=\
+\x22round\x22 stroke-l\
+inejoin=\x22round\x22>\
+\x0d\x0a  <rect x=\x229\x22 \
+y=\x229\x22 width=\x2213\x22\
+ height=\x2213\x22 rx=\
+\x222\x22 ry=\x222\x22></rec\
+t>\x0d\x0a  <path d=\x22M\
+5 15H4a2 2 0 0 1\
+-2-2V4a2 2 0 0 1\
+ 2-2h9a2 2 0 0 1\
+ 2 2v1\x22></path>\x0d\
+\x0a</svg>\x0d\x0a\
+\x00\x00\x01Z\
 <\
-svg width=\x2224\x22 h\
-eight=\x2224\x22 viewB\
-ox=\x220 0 24 24\x22 f\
-ill=\x22none\x22 xmlns\
-=\x22http://www.w3.\
-org/2000/svg\x22>\x0d\x0a\
-<path d=\x22M22 4h-\
-2c-.55 0-1 .45-1\
- 1v9c0 .55.45 1 \
-1 1h2V4zM2.17 11\
-.12c-.11.25-.17.\
-52-.17.8V13c0 1.\
-1.9 2 2 2h5.5l-.\
-92 4.65c-.05.22-\
-.02.46.08.66.23.\
-45.52.86.88 1.22\
-L10 22l6.41-6.41\
-c.38-.38.59-.89.\
-59-1.42V6.34C17 \
-5.05 15.95 4 14.\
-66 4h-8.1c-.71 0\
--1.36.37-1.72.97\
-l-2.67 6.15z\x22 fi\
-ll=\x22currentColor\
-\x22/>\x0d\x0a</svg>\x0d\x0a\
+svg xmlns=\x22http:\
+//www.w3.org/200\
+0/svg\x22 width=\x2224\
+\x22 height=\x2224\x22 vi\
+ewBox=\x220 0 24 24\
+\x22 fill=\x22none\x22 st\
+roke=\x22currentCol\
+or\x22 stroke-width\
+=\x222\x22 stroke-line\
+cap=\x22round\x22 stro\
+ke-linejoin=\x22rou\
+nd\x22>\x0d\x0a  <path d=\
+\x22M10 15v4a3 3 0 \
+0 0 3 3l4-9V2H5.\
+72a2 2 0 0 0-2 1\
+.7l-1.38 9a2 2 0\
+ 0 0 2 2.3zm7-13\
+h2.67A2.31 2.31 \
+0 0 1 22 4v7a2.3\
+1 2.31 0 0 1-2.3\
+3 2H17\x22></path>\x0d\
+\x0a</svg>\x0d\x0a\
 "
 
 qt_resource_name = b"\
@@ -422,19 +615,19 @@ qt_resource_struct = b"\
 \x00\x00\x00\xa4\x00\x02\x00\x00\x00\x01\x00\x00\x00\x07\
 \x00\x00\x00\x00\x00\x00\x00\x00\
 \x00\x00\x00*\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\
-\x00\x00\x01\x95\x1aX\xa7\x22\
-\x00\x00\x00T\x00\x00\x00\x00\x00\x01\x00\x00\x02\xe0\
+\x00\x00\x01\x95\x1b\x11\xfb\x10\
+\x00\x00\x00T\x00\x00\x00\x00\x00\x01\x00\x00\x07\xae\
 \x00\x00\x01\x95\x1a}?\x80\
-\x00\x00\x00z\x00\x00\x00\x00\x00\x01\x00\x00\x07\xc6\
-\x00\x00\x01\x95\x1a\xe45\xa1\
-\x00\x00\x00\xb6\x00\x01\x00\x00\x00\x01\x00\x00\x0d0\
-\x00\x00\x01\x95\x1ap_\xef\
-\x00\x00\x00\xdc\x00\x00\x00\x00\x00\x01\x00\x00\x111\
-\x00\x00\x01\x95\x1ag7\xd9\
-\x00\x00\x00\xfc\x00\x00\x00\x00\x00\x01\x00\x00\x12\xca\
-\x00\x00\x01\x95\x1ag7\xd8\
-\x00\x00\x01\x12\x00\x00\x00\x00\x00\x01\x00\x00\x13\xea\
-\x00\x00\x01\x95\x1ag7\xd9\
+\x00\x00\x00z\x00\x00\x00\x00\x00\x01\x00\x00\x0c\x94\
+\x00\x00\x01\x95\x1b\x08m@\
+\x00\x00\x00\xb6\x00\x00\x00\x00\x00\x01\x00\x00\x11%\
+\x00\x00\x01\x95\x1b\x19x\xd4\
+\x00\x00\x00\xdc\x00\x00\x00\x00\x00\x01\x00\x00\x1cw\
+\x00\x00\x01\x95\x1b\x1f\x1b\xf5\
+\x00\x00\x00\xfc\x00\x00\x00\x00\x00\x01\x00\x00\x1d\xc3\
+\x00\x00\x01\x95\x1b\x1f\x1b\xf1\
+\x00\x00\x01\x12\x00\x00\x00\x00\x00\x01\x00\x00 1\
+\x00\x00\x01\x95\x1b\x1f\x1b\xf1\
 "
 
 def qInitResources():

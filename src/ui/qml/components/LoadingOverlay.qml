@@ -4,13 +4,12 @@ import "." as Components
 
 Rectangle {
     id: root
-    width: 60
-    height: 60
-    radius: 30
+    width: 44
+    height: 44
+    radius: width/2
     color: "#ffffff"
     opacity: 0
     visible: opacity > 0
-    scale: opacity
     
     // Centriranje u parent
     anchors.centerIn: parent
@@ -28,12 +27,12 @@ Rectangle {
     Components.LoadingSpinner {
         anchors.centerIn: parent
         running: root.visible
-        size: 30
+        size: 24
     }
 
     // Fade in/out
     Behavior on opacity {
-        NumberAnimation { duration: 200 }
+        NumberAnimation { duration: 150 }
     }
     
     // Scale animation
